@@ -26,5 +26,13 @@ class Activity1 : AppCompatActivity() {
             }
             startActivity(explicit)
         }
+        findViewById<Button>(R.id.button3).setOnClickListener {
+            val mes = findViewById<TextInputEditText>(R.id.Edit).text.toString()
+            val share = Intent(Intent.ACTION_SEND).apply {
+                putExtra(Intent.EXTRA_TEXT,mes)
+                type = "text/plain"
+            }
+            startActivity(share)
+        }
     }
 }
