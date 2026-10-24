@@ -20,7 +20,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.example.studying.ui.theme.StudyingTheme
+import kotlinx.serialization.Serializable
 
 data class App(val icon: Int, val title: String, val description: String, val category: String)
 
@@ -51,7 +53,14 @@ fun RootNavHost() {
     val myNavController = rememberNavController()
     NavHost(navController = myNavController, startDestination = HOME_DEST) {
         composable(HOME_DEST) {Screen(myNavController)}
-        composable(APP_DEST) {AppDetail(Apps[0])}
+        //composable( route = APP_DEST) {AppDetail(Apps[0])}
+        composable(
+            route = "${APP_DEST}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id")
+            AppDetail(id = requireNotNull(id))
+        }
     }
 }
 

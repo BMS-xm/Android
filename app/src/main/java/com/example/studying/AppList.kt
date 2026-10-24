@@ -23,7 +23,7 @@ fun AppList(apps: List<App>, navController: NavController) {
                 val app = apps[n]
                 Row(verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.clickable(onClick = {
-                        navController.navigate(APP_DEST)
+                        navController.navigate("$APP_DEST/$n")
                     })) {
                     Image(painter = painterResource(app.icon), "")
                     Column(modifier = Modifier.padding(16.dp)) {
