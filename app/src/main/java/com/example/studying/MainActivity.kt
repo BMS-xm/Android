@@ -1,37 +1,26 @@
 package com.example.studying
 
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.navigation.toRoute
 import com.example.studying.ui.theme.StudyingTheme
-import kotlinx.serialization.Serializable
 
 data class App(val icon: Int, val title: String, val description: String, val category: String)
 
-val Apps = listOf(
-    App(R.drawable.ic_launcher_foreground, "Calc", "Smart calculator", "Tools"),
-    App(R.drawable.ic_launcher_foreground, "Note", "Smart notepad", "Business"),
-    App(R.drawable.ic_launcher_foreground, "Cam", "Smart camera", "Multimedia"),
-    App(R.drawable.ic_launcher_foreground, "Dict", "Smart dictophone", "Multimedia")
-)
 
 const val HOME_DEST = "home"
 const val APP_DEST = "app"
@@ -41,7 +30,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             StudyingTheme {
-                //Screen()
                 RootNavHost()
             }
         }
@@ -50,25 +38,34 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun RootNavHost() {
+    val viewModel = viewModel<AppListViewModel>()
     val myNavController = rememberNavController()
+    LaunchedEffect(Unit) {
+        viewModel.getContent()
+    }
     NavHost(navController = myNavController, startDestination = HOME_DEST) {
-        composable(HOME_DEST) {Screen(myNavController)}
+        composable(HOME_DEST) {HomeScreen(viewModel, myNavController)}
         //composable( route = APP_DEST) {AppDetail(Apps[0])}
         composable(
             route = "${APP_DEST}/{id}",
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getInt("id")
-            AppDetail(id = requireNotNull(id))
+            AppDetail(viewModel, id = requireNotNull(id))
         }
     }
 }
 
 @Composable
-fun Screen(navController: NavController) {
-    Column() {
+fun HomeScreen(viewModel : AppListViewModel, navController: NavController) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    Column {
         ToolBar()
-        AppList(Apps, navController)
+        if (state.loading) {
+            CircularProgressIndicator()
+        } else {
+            AppList(state.items, navController)
+        }
     }
 }
 
@@ -76,11 +73,8 @@ fun Screen(navController: NavController) {
 @Composable
 fun Preview() {
     StudyingTheme {
-        Column() {
+        Column {
             RootNavHost()
-            //Screen()
-            //App(Apps[1])
-            //AppDetail(Apps[2])
         }
     }
 }

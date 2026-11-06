@@ -2,7 +2,6 @@ package com.example.studying
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -17,7 +16,7 @@ import androidx.navigation.NavController
 
 @Composable
 fun AppList(apps: List<App>, navController: NavController) {
-    LazyColumn() {
+    LazyColumn {
         for (n in 0..apps.size - 1) {
             item {
                 val app = apps[n]
