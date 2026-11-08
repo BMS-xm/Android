@@ -1,4 +1,4 @@
-package com.example.studying
+package com.example.studying.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

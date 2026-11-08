@@ -1,4 +1,6 @@
-package com.example.studying
+package com.example.studying.presentation
+
+import com.example.studying.R
 
 class AppListRepository{
     fun get(): List<App> = listOf(

@@ -1,4 +1,4 @@
-package com.example.studying
+package com.example.studying.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,10 +17,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.studying.ui.theme.StudyingTheme
+import com.example.studying.presentation.appdetails.AppDetails
+import com.example.studying.presentation.appdetails.AppDetailsViewModel
+import com.example.studying.presentation.theme.StudyingTheme
 
-data class App(val icon: Int, val title: String, val description: String, val category: String)
-
+data class App(
+    val icon: Int,
+    val title: String,
+    val description: String,
+    val category: String
+)
 
 const val HOME_DEST = "home"
 const val APP_DEST = "app"
@@ -30,7 +36,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             StudyingTheme {
-                RootNavHost()
+                val detailsViewModel = viewModel<AppDetailsViewModel>()
+                AppDetails(detailsViewModel)
+                //RootNavHost()
             }
         }
     }

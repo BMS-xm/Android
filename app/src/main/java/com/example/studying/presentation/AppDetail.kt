@@ -1,4 +1,4 @@
-package com.example.studying
+package com.example.studying.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyRow
