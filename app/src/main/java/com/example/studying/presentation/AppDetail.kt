@@ -8,23 +8,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.studying.presentation.applist.AppListViewModel
 
 @Composable
 fun AppDetail(viewModel: AppListViewModel, id: Int) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val state by viewModel.state.collectAsStateWithLifecycle()
-            if (state.loading) {
-                CircularProgressIndicator()
-            } else {
-                App(state.items[id])
-                Text("See also:")
-                LazyRow {
-                    for (app in state.items) {
-                        item {
-                            App(app)
-                        }
+        if (state.loading) {
+            CircularProgressIndicator()
+        } else {
+            App(state.items[id])
+            Text("See also:")
+            LazyRow {
+                for (app in state.items) {
+                    item {
+                        App(app)
                     }
                 }
+            }
         }
     }
 }

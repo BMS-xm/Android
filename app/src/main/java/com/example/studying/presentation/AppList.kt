@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.studying.domain.App
 
 @Composable
 fun AppList(apps: List<App>, navController: NavController) {

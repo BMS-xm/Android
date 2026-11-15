@@ -19,14 +19,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.studying.presentation.appdetails.AppDetails
 import com.example.studying.presentation.appdetails.AppDetailsViewModel
+import com.example.studying.presentation.applist.AppListViewModel
 import com.example.studying.presentation.theme.StudyingTheme
-
-data class App(
-    val icon: Int,
-    val title: String,
-    val description: String,
-    val category: String
-)
 
 const val HOME_DEST = "home"
 const val APP_DEST = "app"
@@ -36,21 +30,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             StudyingTheme {
-                val detailsViewModel = viewModel<AppDetailsViewModel>()
-                AppDetails(detailsViewModel)
-                //RootNavHost()
+                //val detailsViewModel = viewModel<AppDetailsViewModel>()
+                //AppDetails(detailsViewModel)
+                val listViewModel = viewModel<AppListViewModel>()
+                RootNavHost(listViewModel)
             }
         }
     }
 }
 
 @Composable
-fun RootNavHost() {
-    val viewModel = viewModel<AppListViewModel>()
+fun RootNavHost(viewModel: AppListViewModel) {
     val myNavController = rememberNavController()
-    LaunchedEffect(Unit) {
-        viewModel.getContent()
-    }
+    //LaunchedEffect(Unit) {
+    //    viewModel.getContent()
+    //}
     NavHost(navController = myNavController, startDestination = HOME_DEST) {
         composable(HOME_DEST) {HomeScreen(viewModel, myNavController)}
         //composable( route = APP_DEST) {AppDetail(Apps[0])}
@@ -82,7 +76,7 @@ fun HomeScreen(viewModel : AppListViewModel, navController: NavController) {
 fun Preview() {
     StudyingTheme {
         Column {
-            RootNavHost()
+            //RootNavHost()
         }
     }
 }

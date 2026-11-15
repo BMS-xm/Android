@@ -1,13 +1,13 @@
 package com.example.studying.data
 
 data class AppDetailsDto(
+    val id: String,
     val name: String,
-    //val appRating: Int,
-    //val developer: String,
-    //val ageRating: Int,
-    //val size: Float,
+    val developer: String,
+    val category: String,
+    val ageRating: Int,
+    val size: Double,
     val iconUrl: String,
-    //val screenshotUrlList: List<String>,
+    val screenshotUrlList: List<String>,
     val description: String,
-    val category: String
 )
