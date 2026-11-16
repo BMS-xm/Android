@@ -2,6 +2,7 @@ package com.example.studying.presentation.appdetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,10 @@ fun AppDetails(viewModel: AppDetailsViewModel) {
             Text(text = state.details.title)
             Text(text = state.details.description)
             Text(text = state.details.category)
+            Text(state.progress.toString())
+            Button(onClick = {viewModel.onButtonClick()}) {
+                Text(if (state.installing) "Cancel" else "Install")
+            }
         }
     }
 }

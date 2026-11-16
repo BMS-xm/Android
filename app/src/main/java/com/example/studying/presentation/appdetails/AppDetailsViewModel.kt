@@ -37,4 +37,15 @@ class AppDetailsViewModel: ViewModel(){
             )
         }
     }
+
+    fun onButtonClick() {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(installing = true)
+            for (i in 1..100) {
+                _state.value = _state.value.copy(progress = i)
+                delay(200)
+            }
+            _state.value = _state.value.copy(installing = false)
+        }
+    }
 }

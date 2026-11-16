@@ -2,6 +2,7 @@ package com.example.studying.presentation.appdetails
 
 import com.example.studying.R
 import com.example.studying.domain.AppDetails
+import kotlinx.coroutines.Job
 
 data class AppDetailsState(
     val details: AppDetails = AppDetails(
@@ -10,5 +11,8 @@ data class AppDetailsState(
         "Smart calculator",
         "Tools"
     ),
-    val loading: Boolean = false
+    val loading: Boolean = false,
+    val installing: Boolean = false,
+    val progress: Int = 0,
+    //val job: Job?
 )
