@@ -15,6 +15,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun AppDetails(viewModel: AppDetailsViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val state by viewModel.state.collectAsStateWithLifecycle()
+        var progressText: String
+        var buttonText: String
         if (state.loading) {
             CircularProgressIndicator()
         } else {
@@ -22,9 +24,26 @@ fun AppDetails(viewModel: AppDetailsViewModel) {
             Text(text = state.details.title)
             Text(text = state.details.description)
             Text(text = state.details.category)
-            Text(state.progress.toString())
+            if (state.installing) {
+                progressText = if (state.installed) {
+                    "Uninstalling "
+                } else {
+                    "Installing "
+                }
+                progressText += state.progress.toString()
+                buttonText = "Cancel"
+                } else {
+                if (state.installed) {
+                    progressText = "Installed"
+                    buttonText = "Uninstall"
+                } else {
+                    progressText = "Not installed"
+                    buttonText = "Install"
+                }
+            }
+            Text(progressText)
             Button(onClick = {viewModel.onButtonClick()}) {
-                Text(if (state.installing) "Cancel" else "Install")
+                Text(buttonText)
             }
         }
     }

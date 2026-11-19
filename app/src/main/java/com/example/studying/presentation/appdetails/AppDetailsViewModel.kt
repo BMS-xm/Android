@@ -6,6 +6,7 @@ import com.example.studying.data.AppDetailsApi
 import com.example.studying.data.AppDetailsMapper
 import com.example.studying.data.AppDetailsRepositoryImpl
 import com.example.studying.domain.GetAppDetailsUseCase
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +21,7 @@ class AppDetailsViewModel: ViewModel(){
         )
     )
     private val _state = MutableStateFlow(AppDetailsState())
+    private var _installJob: Job = Job()
     val state = _state.asStateFlow()
 
     init {
@@ -39,13 +41,24 @@ class AppDetailsViewModel: ViewModel(){
     }
 
     fun onButtonClick() {
-        viewModelScope.launch {
-            _state.value = _state.value.copy(installing = true)
-            for (i in 1..100) {
-                _state.value = _state.value.copy(progress = i)
-                delay(200)
+        if (_state.value.installing) {
+            _installJob.cancel()
+            _state.value = _state.value.copy(
+                installing = false,
+                progress = 0
+            )
+        } else {
+            _installJob = viewModelScope.launch {
+                _state.value = _state.value.copy(installing = true)
+                for (i in 1..100) {
+                    _state.value = _state.value.copy(progress = i)
+                    delay(0.1.seconds)
+                }
+                _state.value = _state.value.copy(
+                    installing = false,
+                    installed = !_state.value.installed
+                )
             }
-            _state.value = _state.value.copy(installing = false)
         }
     }
 }
